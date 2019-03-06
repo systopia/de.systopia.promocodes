@@ -1,7 +1,41 @@
 <?php
+/*-------------------------------------------------------+
+| SYSTOPIA PromoCodes Extension                          |
+| Copyright (C) 2019 SYSTOPIA                            |
+| Author: B. Endres (endres@systopia.de)                 |
+| http://www.systopia.de/                                |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included agpl.txt or online    |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*/
+
 
 require_once 'promocodes.civix.php';
+
 use CRM_Promocodes_ExtensionUtil as E;
+
+/**
+ * Add an action for creating promo codes based on a contact set
+ *
+ * @param string $objectType specifies the component
+ * @param array $tasks the list of actions
+ *
+ * @access public
+ */
+function promocodes_civicrm_searchTasks($objectType, &$tasks) {
+  if ($objectType == 'contact') {
+    // this object is only available for the 'merge' mode
+    $tasks['generate_promocode'] = array(
+        'title'  => E::ts('Generate PromoCode'),
+        'class'  => 'CRM_Promocodes_Form_Task_Generate',
+        'result' => false);
+  }
+}
 
 /**
  * Implements hook_civicrm_config().
