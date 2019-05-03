@@ -14,7 +14,6 @@
 +-------------------------------------------------------*}
 
 <h3>{ts domain="de.systopia.promocodes"}PromoCode Parameters{/ts}</h3>
-
 <br/>
 
 <div class="crm-section">
@@ -25,6 +24,20 @@
 <div class="crm-section">
     <div class="label">{$form.code_type.label}</div>
     <div class="content">{$form.code_type.html}</div>
+    <div class="clear"></div>
+</div>
+
+<h3>{ts domain="de.systopia.promocodes"}Custom Columns{/ts}</h3>
+<br/>
+
+<div class="crm-section">
+    <div class="label">{$form.custom1_id.label}</div>
+    <div class="content">{$form.custom1_id.html}</div>
+    <div class="clear"></div>
+</div>
+<div class="crm-section">
+    <div class="label">{$form.custom1_name.label}</div>
+    <div class="content">{$form.custom1_name.html}</div>
     <div class="clear"></div>
 </div>
 

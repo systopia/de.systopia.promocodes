@@ -45,6 +45,24 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task {
         array('class' => 'huge')
     );
 
+    // add custom field options
+    $custom_fields = $this->getCustomFields();
+    $this->add(
+        'select',
+        'custom1_id',
+        E::ts('Custom Field'),
+        $custom_fields,
+        FALSE,
+        array('class' => 'huge')
+    );
+    $this->add(
+        'text',
+        'custom1_name',
+        E::ts('Column Name'),
+        array('class' => 'huge'),
+        FALSE
+    );
+
     parent::buildQuickForm();
 
     $this->addButtons(array(
@@ -89,14 +107,29 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task {
 
     // store defaults
     $values = array(
-        'campaign_id' => CRM_Utils_Array::value('campaign_id', $all_values),
-        'code_type'   => CRM_Utils_Array::value('code_type', $all_values),
+        'campaign_id'  => CRM_Utils_Array::value('campaign_id', $all_values),
+        'code_type'    => CRM_Utils_Array::value('code_type', $all_values),
+        'custom1_id'   => CRM_Utils_Array::value('custom1_id', $all_values),
+        'custom1_name' => CRM_Utils_Array::value('custom1_name', $all_values),
     );
     civicrm_api3('Setting', 'create', array('de.systopia.promocodes.contact' => $values));
 
+    // GENERATION:
     if (isset($all_values['_qf_Generate_submit'])) {
+      // EXTRACT PARAMETERS
+      $params = $values;
+      if (!empty($values['custom1_id']) && !empty($values['custom1_name'])) {
+        $params['custom_fields'] = [
+            [
+                'field_id'    => $values['custom1_id'],
+                'field_key'   => "custom_field_{$values['custom1_id']}",
+                'field_title' => $values['custom1_name'],
+            ]
+        ];
+      }
+
       // CREATE CSV
-      $generator = new CRM_Promocodes_Generator($values);
+      $generator = new CRM_Promocodes_Generator($params);
       $generator->generateCSV($all_values['code_type'], $this->_contactIds);
     }
 
@@ -117,5 +150,40 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task {
       $campaigns[$campaign['id']] = $campaign['title'];
     }
     return $campaigns;
+  }
+
+
+  /**
+   * Get a list of custom fields that could be used as 'organisation name'
+   */
+  public function getCustomFields() {
+    $options = ['' => E::ts("None")];
+
+    // get custom group IDs
+    $group_query = civicrm_api3('CustomGroup', 'get', [
+        'extends'      => ['IN' => ['Contact', 'Organization', 'Individual']],
+        'is_active'    => 1,
+        'sequential'   => 0,
+        'option.limit' => 0,
+        'is_multiple'  => 0,
+        'return'       => 'id']);
+    $custom_group_ids = array_keys($group_query['values']);
+
+    // get the custom fields
+    if ($custom_group_ids) {
+      $fields = civicrm_api3('CustomField', 'get', [
+          'custom_group_id' => ['IN' => $custom_group_ids],
+          'is_active'       => 1,
+          'data_type'       => 'String',
+          'html_type'       => 'Text',
+          'sequential'      => 0,
+          'option.limit'    => 0,
+          'return'          => 'id,label']);
+      foreach ($fields['values'] as $field) {
+        $options[$field['id']] = E::ts("Custom: %1", [1 => $field['label']]);
+      }
+    }
+
+    return $options;
   }
 }

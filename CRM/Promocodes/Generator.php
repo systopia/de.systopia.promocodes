@@ -108,7 +108,22 @@ class CRM_Promocodes_Generator {
     $prefix_group_id = (int) civicrm_api3('OptionGroup', 'getvalue', ['name' => 'individual_prefix', 'return' => 'id']);
     $suffix_group_id = (int) civicrm_api3('OptionGroup', 'getvalue', ['name' => 'individual_suffix', 'return' => 'id']);
 
-    // TODO: add custom fields
+    // add custom fields
+    if (!empty($this->params['custom_fields'])) {
+      $CUSTOM_FIELD_SELECTS = [];
+      $CUSTOM_FIELD_JOINS   = [];
+      foreach ($this->params['custom_fields'] as $field_spec) {
+        $field = civicrm_api3('CustomField', 'getsingle', ['id' => $field_spec['field_id']]);
+        $group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $field['custom_group_id']]);
+        $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
+        $CUSTOM_FIELD_JOINS[]   = "LEFT JOIN {$group['table_name']} `{$field_spec['field_key']}_table` ON `{$field_spec['field_key']}_table`.entity_id = contact.id";
+      }
+      $CUSTOM_FIELD_SELECTS = implode(",\n", $CUSTOM_FIELD_SELECTS) . ',';
+      $CUSTOM_FIELD_JOINS   = implode(" \n", $CUSTOM_FIELD_JOINS);
+    } else {
+      $CUSTOM_FIELD_SELECTS = '';
+      $CUSTOM_FIELD_JOINS   = '';
+    }
 
     $query_sql = "
         SELECT 
@@ -121,13 +136,15 @@ class CRM_Promocodes_Generator {
           contact.postal_greeting_display AS postal_greeting,
           prefix.label                    AS prefix,
           suffix.label                    AS suffix,
+          {$CUSTOM_FIELD_SELECTS}
           address.street_address          AS street_address,
           address.postal_code             AS postal_code,
           address.city                    AS city
         FROM civicrm_contact contact
         LEFT JOIN civicrm_address address     ON address.contact_id = contact.id  AND address.is_primary = 1
         LEFT JOIN civicrm_option_value prefix ON prefix.value = contact.prefix_id AND prefix.option_group_id = {$prefix_group_id}
-        LEFT JOIN civicrm_option_value suffix ON suffix.value = contact.suffix_id AND suffix.option_group_id = {$suffix_group_id} 
+        LEFT JOIN civicrm_option_value suffix ON suffix.value = contact.suffix_id AND suffix.option_group_id = {$suffix_group_id}
+        {$CUSTOM_FIELD_JOINS} 
         WHERE contact.id IN ({$contact_ids})
           AND (contact.is_deleted IS NULL OR contact.is_deleted = 0)
         GROUP BY contact.id";
