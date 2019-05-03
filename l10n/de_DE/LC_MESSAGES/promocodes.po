@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.promocodes\n"
-"POT-Creation-Date: 2019-03-06 17:22+0100\n"
+"POT-Creation-Date: 2019-05-03 17:05+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
@@ -25,8 +25,16 @@ msgid "Campaign"
 msgstr "Kampagne"
 
 #: CRM/Promocodes/Form/Task/Generate.php
-msgid "Delimiter"
-msgstr "Trennzeichen"
+msgid "Code Type"
+msgstr "Codetyp"
+
+#: CRM/Promocodes/Form/Task/Generate.php
+msgid "Custom Field"
+msgstr "Benutzerdefiniertes Feld"
+
+#: CRM/Promocodes/Form/Task/Generate.php
+msgid "Column Name"
+msgstr "Spaltentitel"
 
 #: CRM/Promocodes/Form/Task/Generate.php
 msgid "Generate CSV"
@@ -37,24 +45,72 @@ msgid "Back"
 msgstr "Zurück"
 
 #: CRM/Promocodes/Form/Task/Generate.php
-msgid "Postal Greeting"
-msgstr "Briefanrede"
+msgid "None"
+msgstr "Kein"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+msgid "Custom: %1"
+msgstr "Feld: %1"
+
+#: CRM/Promocodes/Generator.php
+msgid "Organisation Name"
+msgstr "Organisationsname"
+
+#: CRM/Promocodes/Generator.php
+msgid "Legal Name"
+msgstr "Gesetzlicher Name"
+
+#: CRM/Promocodes/Generator.php
+msgid "Household Name"
+msgstr "Haushaltsname"
+
+#: CRM/Promocodes/Generator.php
+msgid "Prefix"
+msgstr "Präfix"
+
+#: CRM/Promocodes/Generator.php
 msgid "First Name"
 msgstr "Vorname"
 
-#: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Generator.php
 msgid "Last Name"
-msgstr "Nachname:"
+msgstr "Nachname"
 
-#: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Generator.php
+msgid "Suffix"
+msgstr "Suffix"
+
+#: CRM/Promocodes/Generator.php
+msgid "Street Address"
+msgstr "Straße/Hausnr."
+
+#: CRM/Promocodes/Generator.php
+msgid "Postal Code"
+msgstr "PLZ"
+
+#: CRM/Promocodes/Generator.php
+msgid "City"
+msgstr "Ort"
+
+#: CRM/Promocodes/Generator.php
+msgid "Postal Greeting"
+msgstr "Briefanrede"
+
+#: CRM/Promocodes/Generator.php
 msgid "Promo Code"
 msgstr "Werbecode"
 
-#: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Generator.php
 msgid "PromoCodes-"
-msgstr ""
+msgstr "Werbecodes-"
+
+#: CRM/Promocodes/Generator.php
+msgid "'X{Contact}X{Campaign}X{MOD97}X' (fixed length)"
+msgstr "'X{Kontakt}X{Kampagne}X{MOD97}X' (feste Breite)"
+
+#: CRM/Promocodes/Generator.php
+msgid "'X{Contact}X{Campaign}X{MOD97}X' (short)"
+msgstr "'X{Kontakt}X{Kampagne}X{MOD97}X' (Kurzform)"
 
 #: promocodes.php
 msgid "Generate Promo-Code"
@@ -63,6 +119,13 @@ msgstr "Werbecodes Erstellen"
 #: templates/CRM/Promocodes/Form/Task/Generate.tpl
 msgid "PromoCode Parameters"
 msgstr "Werbecode Parameter"
+
+#: templates/CRM/Promocodes/Form/Task/Generate.tpl
+msgid "Custom Columns"
+msgstr "Zusatzspalten"
+
+#~ msgid "Delimiter"
+#~ msgstr "Trennzeichen"
 
 #~ msgid "Generate PromoCode"
 #~ msgstr "Werbecodes Erstellen"
