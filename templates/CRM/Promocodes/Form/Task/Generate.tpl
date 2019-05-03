@@ -23,8 +23,8 @@
     <div class="clear"></div>
 </div>
 <div class="crm-section">
-    <div class="label">{$form.delimiter.label}</div>
-    <div class="content">{$form.delimiter.html}</div>
+    <div class="label">{$form.code_type.label}</div>
+    <div class="content">{$form.code_type.html}</div>
     <div class="clear"></div>
 </div>
 
