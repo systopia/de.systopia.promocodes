@@ -216,7 +216,7 @@ class CRM_Promocodes_Generator {
     $components = [];
     $components[0] = sprintf($contact_format, $contact_id);
     $components[1] = sprintf($campaign_format, $campaign_id);
-    $components[2] = $this->calculate_mod97($components[0] . $components['1']);
+    $components[2] = self::calculate_mod97($components[0] . $components['1']);
     return $delimiter . implode($delimiter, $components) . $delimiter;
   }
 
@@ -228,7 +228,7 @@ class CRM_Promocodes_Generator {
    * @param $number string number
    * @return string two-digit mod97 checksum
    */
-  protected function calculate_mod97($number) {
+  public static function calculate_mod97($number) {
     $number .= '00';
     $mod97 = 97 - ($number % 97) + 1;
     return sprintf('%02d', $mod97);
