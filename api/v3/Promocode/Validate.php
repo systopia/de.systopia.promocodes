@@ -24,6 +24,10 @@ function _civicrm_api3_promocode_Validate_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_promocode_Validate($params) {
+  $data = array(
+    $params['promocode'] => array(),
+  );
+
   try {
     list(,$contact_id, $campaign_id, $checksum) = explode($params['delimiter'], $params['promocode']);
     if (!is_numeric($contact_id) || !is_numeric($campaign_id) || !is_numeric($checksum)) {
@@ -32,9 +36,12 @@ function civicrm_api3_promocode_Validate($params) {
     if ($checksum != CRM_Promocodes_Generator::calculate_mod97($contact_id . $campaign_id)) {
       throw new Exception(E::ts('Invalid checksum.'));
     }
-    return civicrm_api3_create_success();
+    $data[$params['promocode']]['valid'] = 1;
   }
   catch (Exception $exception) {
-    return civicrm_api3_create_error($exception->getMessage());
+    $data[$params['promocode']]['valid'] = 0;
+    $data[$params['promocode']]['validation_message'] = $exception->getMessage();
   }
+
+  return civicrm_api3_create_success($data);
 }
