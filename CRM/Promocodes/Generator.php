@@ -36,6 +36,7 @@ class CRM_Promocodes_Generator {
     $this->params = $params;
     // construct the field set. First: basic fields
     $this->fields = [
+        'contact_id'        => E::ts("Contact ID"),
         'organization_name' => E::ts("Organisation Name"),
         'legal_name'        => E::ts("Legal Name"),
         'household_name'    => E::ts("Household Name"),
