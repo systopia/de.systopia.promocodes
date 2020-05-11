@@ -29,11 +29,15 @@ use CRM_Promocodes_ExtensionUtil as E;
  */
 function promocodes_civicrm_searchTasks($objectType, &$tasks) {
   if ($objectType == 'contact') {
-    // this object is only available for the 'merge' mode
     $tasks['generate_promocode'] = array(
         'title'  => E::ts('Generate Promo-Code'),
         'class'  => 'CRM_Promocodes_Form_Task_Generate',
         'result' => false);
+  } elseif ($objectType == 'membership') {
+    $tasks['generate_promocode'] = array(
+      'title'  => E::ts('Generate Promo-Code'),
+      'class'  => 'CRM_Promocodes_Form_Task_GenerateMembership',
+      'result' => false);
   }
 }
 

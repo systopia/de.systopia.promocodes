@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | SYSTOPIA PromoCodes Extension                          |
-| Copyright (C) 2019 SYSTOPIA                            |
+| Copyright (C) 2020 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
@@ -23,9 +23,8 @@ use CRM_Promocodes_ExtensionUtil as E;
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
+class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
 {
-
     public function buildQuickForm()
     {
         CRM_Utils_System::setTitle(E::ts('Promo-Code Generation'));
@@ -40,15 +39,23 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 
         $this->add(
             'select',
+            'financial_type_id',
+            E::ts('Financial Type'),
+            CRM_Promocodes_Utils::getFinancialTypes(),
+            true
+        );
+
+        $this->add(
+            'select',
             'code_type',
             E::ts('Code Type'),
-            CRM_Promocodes_Generator::getCodeOptions(),
+            CRM_Promocodes_Generator::getCodeOptions('Membership'),
             true,
             array('class' => 'huge')
         );
 
         // add custom field options
-        $custom_fields = CRM_Promocodes_Utils::getCustomFields();
+        $custom_fields = CRM_Promocodes_Utils::getCustomFields(['Contact', 'Organization', 'Individual', 'Membership']);
         $this->add(
             'select',
             'custom1_id',
@@ -89,7 +96,7 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
      */
     public function setDefaultValues()
     {
-        $values = Civi::settings()->get('de.systopia.promocodes.contact');
+        $values = Civi::settings()->get('de.systopia.promocodes.membership');
         if (empty($values) || !is_array($values)) {
             return array();
         } else {
@@ -112,15 +119,16 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 
         // store defaults
         $values = array(
-            'campaign_id'  => CRM_Utils_Array::value('campaign_id', $all_values),
-            'code_type'    => CRM_Utils_Array::value('code_type', $all_values),
-            'custom1_id'   => CRM_Utils_Array::value('custom1_id', $all_values),
-            'custom1_name' => CRM_Utils_Array::value('custom1_name', $all_values),
+            'campaign_id'       => CRM_Utils_Array::value('campaign_id', $all_values),
+            'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $all_values),
+            'code_type'         => CRM_Utils_Array::value('code_type', $all_values),
+            'custom1_id'        => CRM_Utils_Array::value('custom1_id', $all_values),
+            'custom1_name'      => CRM_Utils_Array::value('custom1_name', $all_values),
         );
-        Civi::settings()->set('de.systopia.promocodes.contact', $values);
+        Civi::settings()->set('de.systopia.promocodes.membership', $values);
 
         // GENERATION:
-        if (isset($all_values['_qf_Generate_submit'])) {
+        if (isset($all_values['_qf_GenerateMembership_submit'])) {
             // EXTRACT PARAMETERS
             $params = $values;
             if (!empty($values['custom1_id']) && !empty($values['custom1_name'])) {
@@ -134,8 +142,8 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
             }
 
             // CREATE CSV
-            $generator = new CRM_Promocodes_Generator($params);
-            $generator->generateCSV($all_values['code_type'], $this->_contactIds);
+            $generator = new CRM_Promocodes_Generator($params, 'Membership');
+            $generator->generateCSV($all_values['code_type'], $this->_memberIds);
         }
 
         parent::postProcess();

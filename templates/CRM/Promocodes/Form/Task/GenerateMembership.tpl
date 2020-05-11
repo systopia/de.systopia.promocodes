@@ -1,6 +1,6 @@
 {*-------------------------------------------------------+
 | SYSTOPIA PromoCodes Extension                          |
-| Copyright (C) 2019 SYSTOPIA                            |
+| Copyright (C) 2020 SYSTOPIA                            |
 | Author: B. Endres (endres@systopia.de)                 |
 | http://www.systopia.de/                                |
 +--------------------------------------------------------+
@@ -19,6 +19,11 @@
 <div class="crm-section">
     <div class="label">{$form.code_type.label}</div>
     <div class="content">{$form.code_type.html}</div>
+    <div class="clear"></div>
+</div>
+<div class="crm-section">
+    <div class="label">{$form.financial_type_id.label}</div>
+    <div class="content">{$form.financial_type_id.html}</div>
     <div class="clear"></div>
 </div>
 <div class="crm-section">
