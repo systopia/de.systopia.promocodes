@@ -187,7 +187,9 @@ class CRM_Promocodes_Generator {
         {$CUSTOM_FIELD_JOINS} 
         WHERE contact.id IN ({$contact_ids})
           AND (contact.is_deleted IS NULL OR contact.is_deleted = 0)
-        GROUP BY contact.id";
+        GROUP BY contact.id
+        ORDER BY contact.id ASC  
+        ";
     return $query_sql;
   }
 
@@ -237,8 +239,10 @@ class CRM_Promocodes_Generator {
         LEFT JOIN civicrm_option_value suffix ON suffix.value = contact.suffix_id AND suffix.option_group_id = {$suffix_group_id}
         {$CUSTOM_FIELD_JOINS} 
         WHERE membership.id IN ({$membership_ids})
-          AND (contact.is_deleted IS NULL OR contact.is_deleted = 0)
-        GROUP BY membership.id";
+          AND (contact.is_deleted IS NULL OR contact.is_deleted = 0)          
+        GROUP BY membership.id
+        ORDER BY membership.contact_id ASC
+        ";
         return $query_sql;
     }
 
