@@ -88,8 +88,8 @@ class CRM_Promocodes_Utils {
      * @throws Exception
      *  if something goes wrong with the query
      */
-    public static function getCustomFields($extends = ['Contact', 'Organization', 'Individual']) {
-        $options = ['' => E::ts("None")];
+    public static function getCustomFields($extends = ['Contact', 'Organization', 'Individual', 'Household']) {
+        $options = ['' => E::ts("Disabled")];
 
         // get custom group IDs
         $group_query = civicrm_api3('CustomGroup', 'get', [

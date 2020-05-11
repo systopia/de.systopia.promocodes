@@ -25,6 +25,7 @@ use CRM_Promocodes_ExtensionUtil as E;
  */
 class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 {
+    const CUSTOM_FIELD_COUNT = 5;
 
     public function buildQuickForm()
     {
@@ -49,21 +50,25 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 
         // add custom field options
         $custom_fields = CRM_Promocodes_Utils::getCustomFields();
-        $this->add(
-            'select',
-            'custom1_id',
-            E::ts('Custom Field'),
-            $custom_fields,
-            false,
-            array('class' => 'huge')
-        );
-        $this->add(
-            'text',
-            'custom1_name',
-            E::ts('Column Name'),
-            array('class' => 'huge'),
-            false
-        );
+        $indices = range(1,self::CUSTOM_FIELD_COUNT);
+        $this->assign('custom_indices', $indices);
+        foreach ($indices as $i) {
+            $this->add(
+                'select',
+                "custom{$i}_id",
+                E::ts('Custom Field %1', [1 => $i]),
+                $custom_fields,
+                false,
+                array('class' => 'huge')
+            );
+            $this->add(
+                'text',
+                "custom{$i}_name",
+                E::ts('Column Name'),
+                array('class' => 'huge'),
+                false
+            );
+        }
 
         parent::buildQuickForm();
 
@@ -123,14 +128,17 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
         if (isset($all_values['_qf_Generate_submit'])) {
             // EXTRACT PARAMETERS
             $params = $values;
-            if (!empty($values['custom1_id']) && !empty($values['custom1_name'])) {
-                $params['custom_fields'] = [
-                    [
-                        'field_id'    => $values['custom1_id'],
-                        'field_key'   => "custom_field_{$values['custom1_id']}",
-                        'field_title' => $values['custom1_name'],
-                    ]
-                ];
+            $params['custom_fields'] = [];
+
+            $indices = range(1,self::CUSTOM_FIELD_COUNT);
+            foreach ($indices as $i) {
+                if (!empty($all_values["custom{$i}_id"]) && !empty($all_values["custom{$i}_name"])) {
+                    $params['custom_fields'][] = [
+                        'field_id'    => $all_values["custom{$i}_id"],
+                        'field_key'   => "custom_field_{$i}",
+                        'field_title' => $all_values["custom{$i}_name"],
+                    ];
+                }
             }
 
             // CREATE CSV

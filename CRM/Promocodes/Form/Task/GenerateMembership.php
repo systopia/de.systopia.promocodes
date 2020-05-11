@@ -25,6 +25,8 @@ use CRM_Promocodes_ExtensionUtil as E;
  */
 class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
 {
+    const CUSTOM_FIELD_COUNT = 5;
+
     public function buildQuickForm()
     {
         CRM_Utils_System::setTitle(E::ts('Promo-Code Generation: Memberships'));
@@ -56,21 +58,25 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
 
         // add custom field options
         $custom_fields = CRM_Promocodes_Utils::getCustomFields(['Contact', 'Organization', 'Individual', 'Membership']);
-        $this->add(
-            'select',
-            'custom1_id',
-            E::ts('Custom Field'),
-            $custom_fields,
-            false,
-            array('class' => 'huge')
-        );
-        $this->add(
-            'text',
-            'custom1_name',
-            E::ts('Column Name'),
-            array('class' => 'huge'),
-            false
-        );
+        $indices = range(1,self::CUSTOM_FIELD_COUNT);
+        $this->assign('custom_indices', $indices);
+        foreach ($indices as $i) {
+            $this->add(
+                'select',
+                "custom{$i}_id",
+                E::ts('Custom Field %1', [1 => $i]),
+                $custom_fields,
+                false,
+                array('class' => 'huge')
+            );
+            $this->add(
+                'text',
+                "custom{$i}_name",
+                E::ts('Column Name'),
+                array('class' => 'huge'),
+                false
+            );
+        }
 
         parent::buildQuickForm();
 
@@ -122,8 +128,6 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
             'campaign_id'       => CRM_Utils_Array::value('campaign_id', $all_values),
             'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $all_values),
             'code_type'         => CRM_Utils_Array::value('code_type', $all_values),
-            'custom1_id'        => CRM_Utils_Array::value('custom1_id', $all_values),
-            'custom1_name'      => CRM_Utils_Array::value('custom1_name', $all_values),
         );
         Civi::settings()->set('de.systopia.promocodes.membership', $values);
 
@@ -131,14 +135,17 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
         if (isset($all_values['_qf_GenerateMembership_submit'])) {
             // EXTRACT PARAMETERS
             $params = $values;
-            if (!empty($values['custom1_id']) && !empty($values['custom1_name'])) {
-                $params['custom_fields'] = [
-                    [
-                        'field_id'    => $values['custom1_id'],
-                        'field_key'   => "custom_field_{$values['custom1_id']}",
-                        'field_title' => $values['custom1_name'],
-                    ]
-                ];
+            $params['custom_fields'] = [];
+
+            $indices = range(1,self::CUSTOM_FIELD_COUNT);
+            foreach ($indices as $i) {
+                if (!empty($all_values["custom{$i}_id"]) && !empty($all_values["custom{$i}_name"])) {
+                    $params['custom_fields'][] = [
+                        'field_id'    => $all_values["custom{$i}_id"],
+                        'field_key'   => "custom_field_{$i}",
+                        'field_title' => $all_values["custom{$i}_name"],
+                    ];
+                }
             }
 
             // CREATE CSV

@@ -37,16 +37,15 @@
 <h3>{ts domain="de.systopia.promocodes"}Custom Columns{/ts}</h3>
 <br/>
 
+{foreach from=$custom_indices item=index}
 <div class="crm-section">
-    <div class="label">{$form.custom1_id.label}</div>
-    <div class="content">{$form.custom1_id.html}</div>
+    {capture assign=field_id}custom{$index}_id{/capture}
+    {capture assign=field_name}custom{$index}_name{/capture}
+    <div class="label">{$form.$field_id.label}</div>
+    <div class="content">{$form.$field_id.html}&nbsp;{$form.$field_name.html}</div>
     <div class="clear"></div>
 </div>
-<div class="crm-section">
-    <div class="label">{$form.custom1_name.label}</div>
-    <div class="content">{$form.custom1_name.html}</div>
-    <div class="clear"></div>
-</div>
+{/foreach}
 
 <br/>
 
