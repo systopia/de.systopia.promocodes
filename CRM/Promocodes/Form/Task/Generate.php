@@ -28,7 +28,7 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 
     public function buildQuickForm()
     {
-        CRM_Utils_System::setTitle(E::ts('Promo-Code Generation'));
+        CRM_Utils_System::setTitle(E::ts('Promo-Code Generation: Contacts'));
 
         $this->add(
             'select',
@@ -44,7 +44,7 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
             E::ts('Code Type'),
             CRM_Promocodes_Generator::getCodeOptions(),
             true,
-            array('class' => 'huge')
+            array('class' => 'huge40')
         );
 
         // add custom field options

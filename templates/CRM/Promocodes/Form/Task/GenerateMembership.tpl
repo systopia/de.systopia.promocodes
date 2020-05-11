@@ -26,11 +26,13 @@
     <div class="content">{$form.financial_type_id.html}</div>
     <div class="clear"></div>
 </div>
+<!-- currently not used
 <div class="crm-section">
     <div class="label">{$form.campaign_id.label}</div>
     <div class="content">{$form.campaign_id.html}</div>
     <div class="clear"></div>
 </div>
+-->
 
 <h3>{ts domain="de.systopia.promocodes"}Custom Columns{/ts}</h3>
 <br/>

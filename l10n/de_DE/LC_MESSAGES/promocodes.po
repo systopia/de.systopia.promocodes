@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.promocodes\n"
-"POT-Creation-Date: 2019-12-09 10:16+0100\n"
+"POT-Creation-Date: 2020-05-11 16:58+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
@@ -17,40 +17,54 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: CRM/Promocodes/Form/Task/Generate.php
-msgid "Promo-Code Generation"
-msgstr "Werbecode Erstellung"
+msgid "Promo-Code Generation: Contacts"
+msgstr "Werbecode Erstellung für Kontaktauswahl"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Campaign"
 msgstr "Kampagne"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Code Type"
 msgstr "Codetyp"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Custom Field"
 msgstr "Benutzerdefiniertes Feld"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Column Name"
 msgstr "Spaltentitel"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Generate CSV"
 msgstr "CSV Erstellen"
 
 #: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Back"
 msgstr "Zurück"
 
-#: CRM/Promocodes/Form/Task/Generate.php
-msgid "None"
-msgstr "Kein"
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
+msgid "Promo-Code Generation: Memberships"
+msgstr "Werbecode Erstellung für Mitgliedschaftenauswahl"
+
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
+msgid "Financial Type"
+msgstr "Zuwendungsart"
 
 #: CRM/Promocodes/Generator.php
 msgid "Contact ID"
 msgstr "Kontakt ID"
+
+#: CRM/Promocodes/Generator.php
+msgid "Membership ID"
+msgstr "Mitgliedschaft ID"
 
 #: CRM/Promocodes/Generator.php
 msgid "Organisation Name"
@@ -105,16 +119,28 @@ msgid "PromoCodes-"
 msgstr "Werbecodes-"
 
 #: CRM/Promocodes/Generator.php
-msgid "'X{Contact}X{Campaign}X{MOD97}X' (fixed length)"
-msgstr "'X{Kontakt}X{Kampagne}X{MOD97}X' (feste Breite)"
+msgid "With Campaign (fixed length): 'X{contact}X{campaign}X{checksum}X'"
+msgstr "Mit Kampagne (Länge 22): 'X{Kontakt}X{Kampagne}X{Checksumme}X'"
 
 #: CRM/Promocodes/Generator.php
-msgid "'X{Contact}X{Campaign}X{MOD97}X' (short)"
-msgstr "'X{Kontakt}X{Kampagne}X{MOD97}X' (Kurzform)"
+msgid "With Campaign (short): 'X{contact}X{campaign}X{checksum}X'"
+msgstr "Mit Kampagne (Kurzform): 'X{Kontakt}X{Kampagne}X{Checksumme}X'"
+
+#: CRM/Promocodes/Generator.php
+msgid "With Financial Type (short): 'M{membership}M{type}M{checksum}M'"
+msgstr "Mit Zuwendungsart (Kurzform): 'X{Mitgliedschaft}X{Zuwendungsart}X{Checksumme}X'"
+
+#: CRM/Promocodes/Utils.php
+msgid "None"
+msgstr "Kein(e)"
+
+#: CRM/Promocodes/Utils.php
+msgid "Custom: %1"
+msgstr "Feld: %1"
 
 #: api/v3/Promocode/Validate.php
 msgid "Promocode could not be parsed."
-msgstr ""
+msgstr "Promocode could not be parsed."
 
 #: api/v3/Promocode/Validate.php
 msgid "Invalid checksum."
@@ -125,15 +151,23 @@ msgid "Generate Promo-Code"
 msgstr "Werbecodes Erstellen"
 
 #: templates/CRM/Promocodes/Form/Task/Generate.tpl
+#: templates/CRM/Promocodes/Form/Task/GenerateMembership.tpl
 msgid "PromoCode Parameters"
 msgstr "Werbecode Parameter"
 
 #: templates/CRM/Promocodes/Form/Task/Generate.tpl
+#: templates/CRM/Promocodes/Form/Task/GenerateMembership.tpl
 msgid "Custom Columns"
 msgstr "Zusatzspalten"
 
-#~ msgid "Custom: %1"
-#~ msgstr "Feld: %1"
+#~ msgid "'X{Contact}X{Campaign}X{MOD97}X' (fixed length)"
+#~ msgstr "'X{Kontakt}X{Kampagne}X{MOD97}X' (feste Breite)"
+
+#~ msgid "'X{Contact}X{Campaign}X{MOD97}X' (short)"
+#~ msgstr "'X{Kontakt}X{Kampagne}X{MOD97}X' (Kurzform)"
+
+#~ msgid "'M{Membership}M{FinancialType}M{MOD97}M' (short)"
+#~ msgstr "'M{Mitgliedschaft}M{Zuwendungsart}M{MOD97}M' (Kurzform)"
 
 #~ msgid "Delimiter"
 #~ msgstr "Trennzeichen"

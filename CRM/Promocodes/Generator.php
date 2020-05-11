@@ -327,13 +327,13 @@ class CRM_Promocodes_Generator {
       default:
       case 'Contact':
         return [
-            'mod97_contact10_campaign6_delimiter_X' => E::ts("'X{Contact}X{Campaign}X{MOD97}X' (fixed length)"),
-            'mod97_contact_campaign_delimiter_X'    => E::ts("'X{Contact}X{Campaign}X{MOD97}X' (short)"),
+            'mod97_contact10_campaign6_delimiter_X' => E::ts("With Campaign (fixed length): 'X{contact}X{campaign}X{checksum}X'"),
+            'mod97_contact_campaign_delimiter_X'    => E::ts("With Campaign (short): 'X{contact}X{campaign}X{checksum}X'"),
         ];
 
       case 'Membership':
         return [
-            'mod97_membership_finacialtype_delimiter_M' => E::ts("'M{Membership}M{FinancialType}M{MOD97}M' (short)"),
+            'mod97_membership_finacialtype_delimiter_M' => E::ts("With Financial Type (short): 'M{membership}M{type}M{checksum}M'"),
         ];
     }
   }

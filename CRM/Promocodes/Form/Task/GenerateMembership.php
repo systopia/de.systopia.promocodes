@@ -27,14 +27,14 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
 {
     public function buildQuickForm()
     {
-        CRM_Utils_System::setTitle(E::ts('Promo-Code Generation'));
+        CRM_Utils_System::setTitle(E::ts('Promo-Code Generation: Memberships'));
 
         $this->add(
             'select',
             'campaign_id',
             E::ts('Campaign'),
             CRM_Promocodes_Utils::getCampaignList(),
-            true
+            false
         );
 
         $this->add(
@@ -51,7 +51,7 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
             E::ts('Code Type'),
             CRM_Promocodes_Generator::getCodeOptions('Membership'),
             true,
-            array('class' => 'huge')
+            array('class' => 'huge40')
         );
 
         // add custom field options
