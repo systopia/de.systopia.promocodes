@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.promocodes\n"
-"POT-Creation-Date: 2020-05-11 16:58+0200\n"
+"POT-Creation-Date: 2020-05-11 19:21+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
@@ -32,8 +32,8 @@ msgstr "Codetyp"
 
 #: CRM/Promocodes/Form/Task/Generate.php
 #: CRM/Promocodes/Form/Task/GenerateMembership.php
-msgid "Custom Field"
-msgstr "Benutzerdefiniertes Feld"
+msgid "Custom Field %1"
+msgstr "Zusatzfeld %1"
 
 #: CRM/Promocodes/Form/Task/Generate.php
 #: CRM/Promocodes/Form/Task/GenerateMembership.php
@@ -128,11 +128,17 @@ msgstr "Mit Kampagne (Kurzform): 'X{Kontakt}X{Kampagne}X{Checksumme}X'"
 
 #: CRM/Promocodes/Generator.php
 msgid "With Financial Type (short): 'M{membership}M{type}M{checksum}M'"
-msgstr "Mit Zuwendungsart (Kurzform): 'X{Mitgliedschaft}X{Zuwendungsart}X{Checksumme}X'"
+msgstr ""
+"Mit Zuwendungsart (Kurzform): 'X{Mitgliedschaft}X{Zuwendungsart}X{Checksumme}"
+"X'"
 
 #: CRM/Promocodes/Utils.php
 msgid "None"
 msgstr "Kein(e)"
+
+#: CRM/Promocodes/Utils.php
+msgid "Disabled"
+msgstr "Deaktiviert"
 
 #: CRM/Promocodes/Utils.php
 msgid "Custom: %1"
