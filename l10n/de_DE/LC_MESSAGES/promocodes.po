@@ -129,8 +129,8 @@ msgstr "Mit Kampagne (Kurzform): 'X{Kontakt}X{Kampagne}X{Checksumme}X'"
 #: CRM/Promocodes/Generator.php
 msgid "With Financial Type (short): 'M{membership}M{type}M{checksum}M'"
 msgstr ""
-"Mit Zuwendungsart (Kurzform): 'X{Mitgliedschaft}X{Zuwendungsart}X{Checksumme}"
-"X'"
+"Mit Zuwendungsart (Kurzform): 'M{Mitgliedschaft}M{Zuwendungsart}M{Checksumme}"
+"M'"
 
 #: CRM/Promocodes/Utils.php
 msgid "None"
