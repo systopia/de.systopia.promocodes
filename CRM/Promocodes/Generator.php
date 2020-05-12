@@ -162,7 +162,7 @@ class CRM_Promocodes_Generator {
     $suffix_group_id = (int) civicrm_api3('OptionGroup', 'getvalue', ['name' => 'individual_suffix', 'return' => 'id']);
 
     // calculate custom field snippets
-    list($CUSTOM_FIELD_SELECTS, $CUSTOM_FIELD_JOINS) = $this->buildCustomFieldSnippets();
+    list($CUSTOM_FIELD_SELECTS, $CUSTOM_FIELD_JOINS) = CRM_Promocodes_Utils::buildCustomFieldSnippets($this->params['custom_fields']);
 
     // build query
     $query_sql = "
@@ -213,7 +213,7 @@ class CRM_Promocodes_Generator {
         $suffix_group_id = (int) civicrm_api3('OptionGroup', 'getvalue', ['name' => 'individual_suffix', 'return' => 'id']);
 
         // calculate custom field snippets
-        list($CUSTOM_FIELD_SELECTS, $CUSTOM_FIELD_JOINS) = $this->buildCustomFieldSnippets();
+        list($CUSTOM_FIELD_SELECTS, $CUSTOM_FIELD_JOINS) = CRM_Promocodes_Utils::buildCustomFieldSnippets($this->params['custom_fields']);
 
         // build query
         $query_sql = "
@@ -244,53 +244,6 @@ class CRM_Promocodes_Generator {
         ORDER BY membership.contact_id ASC
         ";
         return $query_sql;
-    }
-
-    /**
-     * Builds two SQL snippets (selects and joins) to include the custom fields
-     *
-     * @return array
-     *    SELECT SQL snippet, JOIN SQL snippet
-     *
-     * @throws CiviCRM_API3_Exception
-     *   should anything go wrong looking up the field metadata
-     */
-    protected function buildCustomFieldSnippets() {
-        $CUSTOM_FIELD_SELECTS = '';
-        $CUSTOM_FIELD_JOINS   = '';
-
-        if (!empty($this->params['custom_fields'])) {
-            $CUSTOM_FIELD_SELECTS = [];
-            $CUSTOM_FIELD_JOINS   = [];
-            foreach ($this->params['custom_fields'] as $field_spec) {
-                $field = civicrm_api3('CustomField', 'getsingle', ['id' => $field_spec['field_id']]);
-                $group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $field['custom_group_id']]);
-
-                // derive the alias for the referred entity
-                // warning: assumes the SQL generator uses aliases like 'contact' and 'membership'...
-                switch ($group['extends']) {
-                    case 'Contact':
-                    case 'Individual':
-                    case 'Household':
-                    case 'Organization':
-                        $table_alias = 'contact';
-                        break;
-
-                    case 'Membership':
-                        $table_alias = 'membership';
-                        break;
-
-                    default:
-                        throw new Exception("Unhandled extends entity {$group['extends']} in custom group.");
-                }
-
-                $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
-                $CUSTOM_FIELD_JOINS[]   = "LEFT JOIN {$group['table_name']} `{$field_spec['field_key']}_table` ON `{$field_spec['field_key']}_table`.entity_id = {$table_alias}.id";
-            }
-            $CUSTOM_FIELD_SELECTS = implode(",\n", $CUSTOM_FIELD_SELECTS) . ',';
-            $CUSTOM_FIELD_JOINS   = implode(" \n", $CUSTOM_FIELD_JOINS);
-        }
-        return [$CUSTOM_FIELD_SELECTS, $CUSTOM_FIELD_JOINS];
     }
 
     /**

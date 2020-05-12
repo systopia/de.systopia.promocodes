@@ -106,8 +106,6 @@ class CRM_Promocodes_Utils {
             $fields = civicrm_api3('CustomField', 'get', [
                 'custom_group_id' => ['IN' => $custom_group_ids],
                 'is_active'       => 1,
-                'data_type'       => 'String',
-                'html_type'       => 'Text',
                 'sequential'      => 0,
                 'option.limit'    => 0,
                 'return'          => 'id,label']);
@@ -117,5 +115,55 @@ class CRM_Promocodes_Utils {
         }
 
         return $options;
+    }
+
+    /**
+     * Builds two SQL snippets (selects and joins) to include the custom fields
+     *
+     * @param array $custom_field_specs
+     *    the custom field specs, containing field_id, custom_group_id, field_key
+     *
+     * @return array
+     *    SELECT SQL snippet, JOIN SQL snippet
+     *
+     * @throws CiviCRM_API3_Exception
+     *   should anything go wrong looking up the field metadata
+     */
+    public static function buildCustomFieldSnippets($custom_field_specs) {
+        $CUSTOM_FIELD_SELECTS = '';
+        $CUSTOM_FIELD_JOINS   = '';
+
+        if (!empty($custom_field_specs)) {
+            $CUSTOM_FIELD_SELECTS = [];
+            $CUSTOM_FIELD_JOINS   = [];
+            foreach ($custom_field_specs as $field_spec) {
+                $field = civicrm_api3('CustomField', 'getsingle', ['id' => $field_spec['field_id']]);
+                $group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $field['custom_group_id']]);
+
+                // derive the alias for the referred entity
+                // warning: assumes the SQL generator uses aliases like 'contact' and 'membership'...
+                switch ($group['extends']) {
+                    case 'Contact':
+                    case 'Individual':
+                    case 'Household':
+                    case 'Organization':
+                        $table_alias = 'contact';
+                        break;
+
+                    case 'Membership':
+                        $table_alias = 'membership';
+                        break;
+
+                    default:
+                        throw new Exception("Unhandled extends entity {$group['extends']} in custom group.");
+                }
+
+                $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
+                $CUSTOM_FIELD_JOINS[]   = "LEFT JOIN {$group['table_name']} `{$field_spec['field_key']}_table` ON `{$field_spec['field_key']}_table`.entity_id = {$table_alias}.id";
+            }
+            $CUSTOM_FIELD_SELECTS = implode(",\n", $CUSTOM_FIELD_SELECTS) . ',';
+            $CUSTOM_FIELD_JOINS   = implode(" \n", $CUSTOM_FIELD_JOINS);
+        }
+        return [$CUSTOM_FIELD_SELECTS, $CUSTOM_FIELD_JOINS];
     }
 }
