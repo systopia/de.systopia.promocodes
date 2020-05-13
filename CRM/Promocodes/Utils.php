@@ -160,32 +160,34 @@ class CRM_Promocodes_Utils {
                     default:
                         throw new Exception("Unhandled extends entity {$group['extends']} in custom group.");
                 }
-
-                // resolve alias
+                // map alias (if mapping provided)
                 if (!empty($alias_mapping[$table_alias])) {
                     $table_alias = $alias_mapping[$table_alias];
                 }
 
-                // always join the table
+                // always join the data table
                 $CUSTOM_FIELD_JOINS[] = "LEFT JOIN {$group['table_name']} `{$field_spec['field_key']}_table` ON `{$field_spec['field_key']}_table`.entity_id = {$table_alias}.id";
 
-                // how to deal with the value
-                switch ($field['html_type']) {
-                    case 'Select':
-                        // there's am option group, so select the label instead
-                        $option_group_id = (int) $field['option_group_id'];
-                        if ($option_group_id) {
-                            $CUSTOM_FIELD_JOINS[] = "LEFT JOIN civicrm_option_value `{$field_spec['field_key']}_value`   ON `{$field_spec['field_key']}_table`.`{$field['column_name']}` = `{$field_spec['field_key']}_value`.value
+                // special treatment for some types
+                if ($field['html_type'] == 'Select') {
+                    // CASE: OptionValue
+                    $option_group_id = (int) $field['option_group_id'];
+                    if ($option_group_id) {
+                        $CUSTOM_FIELD_JOINS[] = "LEFT JOIN civicrm_option_value `{$field_spec['field_key']}_value`   ON `{$field_spec['field_key']}_table`.`{$field['column_name']}` = `{$field_spec['field_key']}_value`.value
                                                                                                                          AND `{$field_spec['field_key']}_value`.option_group_id = {$option_group_id}";
-                            $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_value`.label AS `{$field_spec['field_key']}`";
-                        } else {
-                            $CUSTOM_FIELD_SELECTS[] = "'ERROR' AS `{$field_spec['field_key']}`";
-                        }
-                        break;
+                        $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_value`.label AS `{$field_spec['field_key']}`";
+                    } else {
+                        $CUSTOM_FIELD_SELECTS[] = "'ERROR' AS `{$field_spec['field_key']}`";
+                    }
 
-                    default:
-                        $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
-                        break;
+                } elseif ($field['data_type'] == 'ContactReference') {
+                    // CASE: Contact Reference - fill with display name
+                    $CUSTOM_FIELD_JOINS[] = "LEFT JOIN civicrm_contact `{$field_spec['field_key']}_contactref` ON `{$field_spec['field_key']}_contactref`.id = `{$field_spec['field_key']}_table`.`{$field['column_name']}`";
+                    $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_contactref`.display_name AS `{$field_spec['field_key']}`";
+
+                } else {
+                    $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
+
                 }
             }
             $CUSTOM_FIELD_SELECTS = implode(",\n", $CUSTOM_FIELD_SELECTS) . ',';
