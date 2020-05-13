@@ -102,6 +102,21 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
         }
     }
 
+    /**
+     * Validate the custom field configs
+     */
+    public function validate() {
+        parent::validate();
+
+        // all fields that are not deactivated need a label
+        $indices = range(1,self::CUSTOM_FIELD_COUNT);
+        foreach ($indices as $i) {
+            if (!empty($this->_submitValues["custom{$i}_id"]) && empty($this->_submitValues["custom{$i}_name"])) {
+                $this->_errors["custom{$i}_name"] = E::ts("Please add a column name");
+            }
+        }
+        return (0 == count($this->_errors));
+    }
 
     /**
      * PostProcess:
