@@ -123,13 +123,16 @@ class CRM_Promocodes_Utils {
      * @param array $custom_field_specs
      *    the custom field specs, containing field_id, custom_group_id, field_key
      *
+     * @param array $alias_mapping
+     *    mapping of main table aliases, e.g. 'contact' => 'my_contact_alias'
+     *
      * @return array
      *    SELECT SQL snippet, JOIN SQL snippet
      *
      * @throws CiviCRM_API3_Exception
      *   should anything go wrong looking up the field metadata
      */
-    public static function buildCustomFieldSnippets($custom_field_specs) {
+    public static function buildCustomFieldSnippets($custom_field_specs, $alias_mapping = []) {
         $CUSTOM_FIELD_SELECTS = '';
         $CUSTOM_FIELD_JOINS   = '';
 
@@ -158,8 +161,32 @@ class CRM_Promocodes_Utils {
                         throw new Exception("Unhandled extends entity {$group['extends']} in custom group.");
                 }
 
-                $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
-                $CUSTOM_FIELD_JOINS[]   = "LEFT JOIN {$group['table_name']} `{$field_spec['field_key']}_table` ON `{$field_spec['field_key']}_table`.entity_id = {$table_alias}.id";
+                // resolve alias
+                if (!empty($alias_mapping[$table_alias])) {
+                    $table_alias = $alias_mapping[$table_alias];
+                }
+
+                // always join the table
+                $CUSTOM_FIELD_JOINS[] = "LEFT JOIN {$group['table_name']} `{$field_spec['field_key']}_table` ON `{$field_spec['field_key']}_table`.entity_id = {$table_alias}.id";
+
+                // how to deal with the value
+                switch ($field['html_type']) {
+                    case 'Select':
+                        // there's am option group, so select the label instead
+                        $option_group_id = (int) $field['option_group_id'];
+                        if ($option_group_id) {
+                            $CUSTOM_FIELD_JOINS[] = "LEFT JOIN civicrm_option_value `{$field_spec['field_key']}_value`   ON `{$field_spec['field_key']}_table`.`{$field['column_name']}` = `{$field_spec['field_key']}_value`.value
+                                                                                                                         AND `{$field_spec['field_key']}_value`.option_group_id = {$option_group_id}";
+                            $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_value`.label AS `{$field_spec['field_key']}`";
+                        } else {
+                            $CUSTOM_FIELD_SELECTS[] = "'ERROR' AS `{$field_spec['field_key']}`";
+                        }
+                        break;
+
+                    default:
+                        $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
+                        break;
+                }
             }
             $CUSTOM_FIELD_SELECTS = implode(",\n", $CUSTOM_FIELD_SELECTS) . ',';
             $CUSTOM_FIELD_JOINS   = implode(" \n", $CUSTOM_FIELD_JOINS);
