@@ -108,9 +108,16 @@ class CRM_Promocodes_Utils {
                 'is_active'       => 1,
                 'sequential'      => 0,
                 'option.limit'    => 0,
-                'return'          => 'id,label']);
+                'return'          => 'id,label,data_type']);
             foreach ($fields['values'] as $field) {
-                $options[$field['id']] = E::ts("Custom: %1", [1 => $field['label']]);
+                if ($field['data_type'] == 'ContactReference') {
+                    $options["{$field['id']}-id"] = E::ts("Custom: %1 - %2", [1 => $field['label'], 2 => E::ts("ID")]);
+                    $options["{$field['id']}-display_name"] = E::ts("Custom: %1 - %2", [1 => $field['label'], 2 => E::ts("Display Name")]);
+                    $options["{$field['id']}-first_name"] = E::ts("Custom: %1 - %2", [1 => $field['label'], 2 => E::ts("First Name")]);
+                    $options["{$field['id']}-last_name"] = E::ts("Custom: %1 - %2", [1 => $field['label'], 2 => E::ts("Last Name")]);
+                } else {
+                    $options[$field['id']] = E::ts("Custom: %1", [1 => $field['label']]);
+                }
             }
         }
 
@@ -140,7 +147,12 @@ class CRM_Promocodes_Utils {
             $CUSTOM_FIELD_SELECTS = [];
             $CUSTOM_FIELD_JOINS   = [];
             foreach ($custom_field_specs as $field_spec) {
-                $field = civicrm_api3('CustomField', 'getsingle', ['id' => $field_spec['field_id']]);
+                $field_id = $field_spec['field_id'];
+                $field_sub_id = '';
+                if (!is_numeric($field_id)) {
+                    list($field_id, $field_sub_id) = explode('-', $field_id);
+                }
+                $field = civicrm_api3('CustomField', 'getsingle', ['id' => $field_id]);
                 $group = civicrm_api3('CustomGroup', 'getsingle', ['id' => $field['custom_group_id']]);
 
                 // derive the alias for the referred entity
@@ -181,9 +193,9 @@ class CRM_Promocodes_Utils {
                     }
 
                 } elseif ($field['data_type'] == 'ContactReference') {
-                    // CASE: Contact Reference - fill with display name
+                    // CASE: Contact Reference - fill with sub-id field
                     $CUSTOM_FIELD_JOINS[] = "LEFT JOIN civicrm_contact `{$field_spec['field_key']}_contactref` ON `{$field_spec['field_key']}_contactref`.id = `{$field_spec['field_key']}_table`.`{$field['column_name']}`";
-                    $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_contactref`.display_name AS `{$field_spec['field_key']}`";
+                    $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_contactref`.{$field_sub_id} AS `{$field_spec['field_key']}`";
 
                 } else {
                     $CUSTOM_FIELD_SELECTS[] = "`{$field_spec['field_key']}_table`.`{$field['column_name']}` AS `{$field_spec['field_key']}`";
