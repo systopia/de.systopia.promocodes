@@ -50,8 +50,13 @@ class CRM_Promocodes_Generator {
             break;
 
         case 'Membership':
-            $this->fields['membership_id'] =  E::ts("Membership ID");
-            $this->fields['contact_id'] =  E::ts("Contact ID");
+            $this->fields['membership_id'] = E::ts("Membership ID");
+            $this->fields['contact_id'] = E::ts("Contact ID");
+            $this->fields['campaign_title'] = E::ts("Campaign");
+            $this->fields['start_date'] = E::ts("Membership Start");
+            $this->fields['end_date'] = E::ts("Membership End");
+            $this->fields['join_date'] = E::ts("Membership Joined");
+            $this->fields['status'] = E::ts("Membership Status");
             break;
     }
 
@@ -220,6 +225,12 @@ class CRM_Promocodes_Generator {
         SELECT 
           membership.id                   AS membership_id,
           contact.id                      AS contact_id,
+          campaign.title                  AS campaign_title,
+          membership.start_date           AS start_date, 
+          membership.start_date           AS start_date, 
+          membership.end_date             AS end_date, 
+          membership.join_date            AS join_date,
+          ms.label                        AS status,
           contact.organization_name       AS organization_name,
           contact.legal_name              AS legal_name,
           contact.household_name          AS household_name,
@@ -233,10 +244,12 @@ class CRM_Promocodes_Generator {
           address.postal_code             AS postal_code,
           address.city                    AS city
         FROM civicrm_membership membership
-        LEFT JOIN civicrm_contact contact     ON contact.id = membership.contact_id 
-        LEFT JOIN civicrm_address address     ON address.contact_id = contact.id  AND address.is_primary = 1
-        LEFT JOIN civicrm_option_value prefix ON prefix.value = contact.prefix_id AND prefix.option_group_id = {$prefix_group_id}
-        LEFT JOIN civicrm_option_value suffix ON suffix.value = contact.suffix_id AND suffix.option_group_id = {$suffix_group_id}
+        LEFT JOIN civicrm_contact contact      ON contact.id = membership.contact_id 
+        LEFT JOIN civicrm_address address      ON address.contact_id = contact.id  AND address.is_primary = 1
+        LEFT JOIN civicrm_option_value prefix  ON prefix.value = contact.prefix_id AND prefix.option_group_id = {$prefix_group_id}
+        LEFT JOIN civicrm_option_value suffix  ON suffix.value = contact.suffix_id AND suffix.option_group_id = {$suffix_group_id}
+        LEFT JOIN civicrm_campaign campaign    ON membership.campaign_id = campaign.id
+        LEFT JOIN civicrm_membership_status ms ON membership.status_id = ms.id
         {$CUSTOM_FIELD_JOINS} 
         WHERE membership.id IN ({$membership_ids})
           AND (contact.is_deleted IS NULL OR contact.is_deleted = 0)          
