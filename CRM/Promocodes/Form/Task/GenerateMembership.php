@@ -80,6 +80,12 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
 
         parent::buildQuickForm();
 
+        // set default values
+        $values = Civi::settings()->get('de.systopia.promocodes.membership');
+        if (is_array($values)) {
+            $this->setDefaults($values);
+        }
+
         $this->addButtons(
             array(
                 array(
@@ -94,20 +100,6 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
                 ),
             )
         );
-    }
-
-
-    /**
-     * get the last iteration's values
-     */
-    public function setDefaultValues()
-    {
-        $values = Civi::settings()->get('de.systopia.promocodes.membership');
-        if (empty($values) || !is_array($values)) {
-            return array();
-        } else {
-            return $values;
-        }
     }
 
     /**
@@ -144,6 +136,11 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
             'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $all_values),
             'code_type'         => CRM_Utils_Array::value('code_type', $all_values),
         );
+        $indices = range(1,self::CUSTOM_FIELD_COUNT);
+        foreach ($indices as $i) {
+            $values["custom{$i}_id"] = CRM_Utils_Array::value("custom{$i}_id", $all_values, '');
+            $values["custom{$i}_name"] = CRM_Utils_Array::value("custom{$i}_name", $all_values, '');
+        }
         Civi::settings()->set('de.systopia.promocodes.membership', $values);
 
         // GENERATION:

@@ -72,6 +72,12 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 
         parent::buildQuickForm();
 
+        // set default values
+        $values = Civi::settings()->get('de.systopia.promocodes.contact');
+        if (is_array($values)) {
+            $this->setDefaults($values);
+        }
+
         $this->addButtons(
             array(
                 array(
@@ -86,20 +92,6 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
                 ),
             )
         );
-    }
-
-
-    /**
-     * get the last iteration's values
-     */
-    public function setDefaultValues()
-    {
-        $values = Civi::settings()->get('de.systopia.promocodes.contact');
-        if (empty($values) || !is_array($values)) {
-            return array();
-        } else {
-            return $values;
-        }
     }
 
     /**
@@ -134,9 +126,12 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
         $values = array(
             'campaign_id'  => CRM_Utils_Array::value('campaign_id', $all_values),
             'code_type'    => CRM_Utils_Array::value('code_type', $all_values),
-            'custom1_id'   => CRM_Utils_Array::value('custom1_id', $all_values),
-            'custom1_name' => CRM_Utils_Array::value('custom1_name', $all_values),
         );
+        $indices = range(1,self::CUSTOM_FIELD_COUNT);
+        foreach ($indices as $i) {
+            $values["custom{$i}_id"] = CRM_Utils_Array::value("custom{$i}_id", $all_values, '');
+            $values["custom{$i}_name"] = CRM_Utils_Array::value("custom{$i}_name", $all_values, '');
+        }
         Civi::settings()->set('de.systopia.promocodes.contact', $values);
 
         // GENERATION:
