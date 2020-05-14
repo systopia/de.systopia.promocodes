@@ -25,7 +25,7 @@ use CRM_Promocodes_ExtensionUtil as E;
  */
 class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
 {
-    const CUSTOM_FIELD_COUNT = 5;
+    const CUSTOM_FIELD_COUNT = 10;
 
     public function buildQuickForm()
     {
