@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.promocodes\n"
-"POT-Creation-Date: 2020-05-11 19:21+0200\n"
+"POT-Creation-Date: 2020-05-14 11:22+0200\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,7 +16,7 @@ msgid "Promo-Code Generation: Contacts"
 msgstr ""
 
 #: CRM/Promocodes/Form/Task/Generate.php
-#: CRM/Promocodes/Form/Task/GenerateMembership.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php CRM/Promocodes/Generator.php
 msgid "Campaign"
 msgstr ""
 
@@ -45,6 +45,11 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
+msgid "Please add a column name"
+msgstr ""
+
 #: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Promo-Code Generation: Memberships"
 msgstr ""
@@ -59,6 +64,22 @@ msgstr ""
 
 #: CRM/Promocodes/Generator.php
 msgid "Membership ID"
+msgstr ""
+
+#: CRM/Promocodes/Generator.php
+msgid "Membership Start"
+msgstr ""
+
+#: CRM/Promocodes/Generator.php
+msgid "Membership End"
+msgstr ""
+
+#: CRM/Promocodes/Generator.php
+msgid "Membership Joined"
+msgstr ""
+
+#: CRM/Promocodes/Generator.php
+msgid "Membership Status"
 msgstr ""
 
 #: CRM/Promocodes/Generator.php
@@ -77,11 +98,11 @@ msgstr ""
 msgid "Prefix"
 msgstr ""
 
-#: CRM/Promocodes/Generator.php
+#: CRM/Promocodes/Generator.php CRM/Promocodes/Utils.php
 msgid "First Name"
 msgstr ""
 
-#: CRM/Promocodes/Generator.php
+#: CRM/Promocodes/Generator.php CRM/Promocodes/Utils.php
 msgid "Last Name"
 msgstr ""
 
@@ -131,6 +152,18 @@ msgstr ""
 
 #: CRM/Promocodes/Utils.php
 msgid "Disabled"
+msgstr ""
+
+#: CRM/Promocodes/Utils.php
+msgid "Custom: %1 - %2"
+msgstr ""
+
+#: CRM/Promocodes/Utils.php
+msgid "ID"
+msgstr ""
+
+#: CRM/Promocodes/Utils.php
+msgid "Display Name"
 msgstr ""
 
 #: CRM/Promocodes/Utils.php
