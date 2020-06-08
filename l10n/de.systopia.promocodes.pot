@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.promocodes\n"
-"POT-Creation-Date: 2020-05-14 11:22+0200\n"
+"POT-Creation-Date: 2020-06-08 18:31+0200\n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,6 +18,11 @@ msgstr ""
 #: CRM/Promocodes/Form/Task/Generate.php
 #: CRM/Promocodes/Form/Task/GenerateMembership.php CRM/Promocodes/Generator.php
 msgid "Campaign"
+msgstr ""
+
+#: CRM/Promocodes/Form/Task/Generate.php
+#: CRM/Promocodes/Form/Task/GenerateMembership.php
+msgid "Financial Type"
 msgstr ""
 
 #: CRM/Promocodes/Form/Task/Generate.php
@@ -52,10 +57,6 @@ msgstr ""
 
 #: CRM/Promocodes/Form/Task/GenerateMembership.php
 msgid "Promo-Code Generation: Memberships"
-msgstr ""
-
-#: CRM/Promocodes/Form/Task/GenerateMembership.php
-msgid "Financial Type"
 msgstr ""
 
 #: CRM/Promocodes/Generator.php
@@ -140,6 +141,18 @@ msgstr ""
 
 #: CRM/Promocodes/Generator.php
 msgid "With Campaign (short): 'X{contact}X{campaign}X{checksum}X'"
+msgstr ""
+
+#: CRM/Promocodes/Generator.php
+msgid ""
+"With Campaign+FinancialType (fixed length): 'X{contact}X{campaign}X{ftype}"
+"X{checksum}X'"
+msgstr ""
+
+#: CRM/Promocodes/Generator.php
+msgid ""
+"With Campaign+FinancialType (short): 'X{contact}X{campaign}X{ftype}"
+"X{checksum}X'"
 msgstr ""
 
 #: CRM/Promocodes/Generator.php
