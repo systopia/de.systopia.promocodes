@@ -44,7 +44,7 @@ class CRM_Promocodes_Form_Task_GenerateMembership extends CRM_Member_Form_Task
             'financial_type_id',
             E::ts('Financial Type'),
             CRM_Promocodes_Utils::getFinancialTypes(),
-            true
+            false
         );
 
         $this->add(
