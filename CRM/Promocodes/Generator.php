@@ -297,8 +297,10 @@ class CRM_Promocodes_Generator {
       default:
       case 'Contact':
         return [
-            'mod97_contact10_campaign6_delimiter_X' => E::ts("With Campaign (fixed length): 'X{contact}X{campaign}X{checksum}X'"),
-            'mod97_contact_campaign_delimiter_X'    => E::ts("With Campaign (short): 'X{contact}X{campaign}X{checksum}X'"),
+            'mod97_contact10_campaign6_delimiter_X'        => E::ts("With Campaign (fixed length): 'X{contact}X{campaign}X{checksum}X'"),
+            'mod97_contact_campaign_delimiter_X'           => E::ts("With Campaign (short): 'X{contact}X{campaign}X{checksum}X'"),
+            'mod97_contact10_campaign6_ftype2_delimiter_X' => E::ts("With Campaign+FinancialType (fixed length): 'X{contact}X{campaign}X{ftype}X{checksum}X'"),
+            'mod97_contact_campaign_ftype_delimiter_X'     => E::ts("With Campaign+FinancialType (short): 'X{contact}X{campaign}X{ftype}X{checksum}X'"),
         ];
 
       case 'Membership':
@@ -330,6 +332,16 @@ class CRM_Promocodes_Generator {
         $financial_type_id = CRM_Utils_Array::value('financial_type_id', $this->params, 0);
         return $this->generateSimpleTwoComponentMOD97($data->membership_id, '%d', $financial_type_id, '%d', 'M');
 
+      case 'mod97_contact10_campaign6_ftype2_delimiter_X':
+        $financial_type_id = CRM_Utils_Array::value('financial_type_id', $this->params, 0);
+        $campaign_id = CRM_Utils_Array::value('campaign_id', $this->params, 0);
+        return $this->generateSimpleThreeComponentMOD97($data->contact_id, '%010d', $campaign_id, '%06d', $financial_type_id, '%02d', 'X');
+
+      case 'mod97_contact_campaign_ftype_delimiter_X':
+        $financial_type_id = CRM_Utils_Array::value('financial_type_id', $this->params, 0);
+        $campaign_id = CRM_Utils_Array::value('campaign_id', $this->params, 0);
+        return $this->generateSimpleThreeComponentMOD97($data->contact_id, '%d', $campaign_id, '%d', $financial_type_id, '%d', 'X');
+
       default:
         return 'UNDEFINED';
     }
@@ -344,7 +356,20 @@ class CRM_Promocodes_Generator {
     $components = [];
     $components[0] = sprintf($part1_format, $part1_value);
     $components[1] = sprintf($part2_format, $part2_value);
-    $components[2] = self::calculate_mod97($components[0] . $components['1']);
+    $components[2] = self::calculate_mod97($components[0] . $components[1]);
+    return $delimiter . implode($delimiter, $components) . $delimiter;
+  }
+
+  /**
+   * Simple MOD97 code generation
+   * @return string
+   */
+  protected function generateSimpleThreeComponentMOD97($part1_value, $part1_format, $part2_value, $part2_format, $part3_value, $part3_format, $delimiter) {
+    $components = [];
+    $components[0] = sprintf($part1_format, $part1_value);
+    $components[1] = sprintf($part2_format, $part2_value);
+    $components[2] = sprintf($part3_format, $part3_value);
+    $components[3] = self::calculate_mod97($components[0] . $components[1] . $components[2]);
     return $delimiter . implode($delimiter, $components) . $delimiter;
   }
 
