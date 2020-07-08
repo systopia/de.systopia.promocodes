@@ -40,6 +40,7 @@ class CRM_Promocodes_Utils {
         $query = civicrm_api3('Campaign', 'get', [
             'is_active'    => 1,
             'return'       => 'id,title',
+            'sort'         => 'title',
             'option.limit' => 0]);
         foreach ($query['values'] as $campaign) {
             $campaigns[$campaign['id']] = $campaign['title'];
