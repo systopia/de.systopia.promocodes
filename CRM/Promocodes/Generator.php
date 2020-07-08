@@ -74,6 +74,7 @@ class CRM_Promocodes_Generator {
         'postal_code'       => E::ts("Postal Code"),
         'city'              => E::ts("City"),
         'postal_greeting'   => E::ts("Postal Greeting"),
+        'addressee_display' => E::ts("Addressee Display"),
     ];
 
     // then: add custom field(s)
@@ -179,6 +180,7 @@ class CRM_Promocodes_Generator {
           contact.first_name              AS first_name,
           contact.last_name               AS last_name,
           contact.postal_greeting_display AS postal_greeting,
+          contact.addressee_display       AS addressee_display,
           prefix.label                    AS prefix,
           suffix.label                    AS suffix,
           {$CUSTOM_FIELD_SELECTS}
