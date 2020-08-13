@@ -187,15 +187,15 @@ function promocodes_civicrm_preProcess($formName, &$form) {
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
+ */
 function promocodes_civicrm_navigationMenu(&$menu) {
-  _promocodes_civix_insert_navigation_menu($menu, 'Mailings', array(
-    'label' => E::ts('New subliminal message'),
-    'name' => 'mailing_subliminal_message',
-    'url' => 'civicrm/mailing/subliminal',
-    'permission' => 'access CiviMail',
+  _promocodes_civix_insert_navigation_menu($menu, 'Campaigns', array(
+    'label' => E::ts('Generate Promocodes'),
+    'name' => 'promocodes_campaign_generate',
+    'url' => 'civicrm/campaign/promocodes',
+    'permission' => 'manage campaign',
     'operator' => 'OR',
     'separator' => 0,
   ));
   _promocodes_civix_navigationMenu($menu);
-} // */
+}
