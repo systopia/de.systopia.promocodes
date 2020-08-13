@@ -13,20 +13,23 @@
 | written permission from the original author(s).        |
 +-------------------------------------------------------*}
 
-<h3>{ts domain="de.systopia.promocodes"}PromoCode Parameters{/ts}</h3>
-<br/>
+<div class="crm-block crm-form-block">
 
-<div class="crm-section">
+  <h3>{ts domain="de.systopia.promocodes"}PromoCode Parameters{/ts}</h3>
+
+  <div class="crm-section">
     <div class="label">{$form.code_type.label}</div>
     <div class="content">{$form.code_type.html}</div>
     <div class="clear"></div>
-</div>
-<div class="crm-section">
+  </div>
+
+  <div class="crm-section">
     <div class="label">{$form.financial_type_id.label}</div>
     <div class="content">{$form.financial_type_id.html}</div>
     <div class="clear"></div>
-</div>
-<!-- currently not used
+  </div>
+
+  <!-- currently not used
 <div class="crm-section">
     <div class="label">{$form.campaign_id.label}</div>
     <div class="content">{$form.campaign_id.html}</div>
@@ -34,21 +37,20 @@
 </div>
 -->
 
-<h3>{ts domain="de.systopia.promocodes"}Custom Columns{/ts}</h3>
-<br/>
+  <h3>{ts domain="de.systopia.promocodes"}Custom Columns{/ts}</h3>
 
-{foreach from=$custom_indices item=index}
-<div class="crm-section">
-    {capture assign=field_id}custom{$index}_id{/capture}
-    {capture assign=field_name}custom{$index}_name{/capture}
-    <div class="label">{$form.$field_id.label}</div>
-    <div class="content">{$form.$field_id.html}&nbsp;{$form.$field_name.html}</div>
-    <div class="clear"></div>
-</div>
-{/foreach}
+  {foreach from=$custom_indices item=index}
+    <div class="crm-section">
+      {capture assign=field_id}custom{$index}_id{/capture}
+      {capture assign=field_name}custom{$index}_name{/capture}
+      <div class="label">{$form.$field_id.label}</div>
+      <div class="content">{$form.$field_id.html}&nbsp;{$form.$field_name.html}</div>
+      <div class="clear"></div>
+    </div>
+  {/foreach}
 
-<br/>
-
-<div class="crm-submit-buttons">
+  <div class="crm-submit-buttons">
     {include file="CRM/common/formButtons.tpl" location="bottom"}
+  </div>
+
 </div>
