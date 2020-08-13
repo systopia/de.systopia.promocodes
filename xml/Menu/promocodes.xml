@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/campaign/promocodes</path>
+    <page_callback>CRM_Promocodes_Form_CampaignPromocodesGenerate</page_callback>
+    <title>Generate Promocodes</title>
+    <access_arguments>manage campaign</access_arguments>
+  </item>
+</menu>

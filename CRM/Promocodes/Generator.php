@@ -58,6 +58,9 @@ class CRM_Promocodes_Generator {
             $this->fields['join_date'] = E::ts("Membership Joined");
             $this->fields['status'] = E::ts("Membership Status");
             break;
+        case 'Campaign':
+            $this->fields['campaign_title'] = E::ts("Campaign");
+            break;
     }
 
     // add the contact fields
@@ -309,6 +312,10 @@ class CRM_Promocodes_Generator {
         return [
             'mod97_membership_finacialtype_delimiter_M' => E::ts("With Financial Type (short): 'M{membership}M{type}M{checksum}M'"),
         ];
+      case 'Campaign':
+        return [
+          'mod97_campaign_ftype_delimiter_X' => E::ts("With Campaign+FinancialType (short): 'X{campaign}X{ftype}X{checksum}X'"),
+        ];
     }
   }
 
@@ -320,7 +327,7 @@ class CRM_Promocodes_Generator {
    *
    * @return string generated code
    */
-  protected function generateCode($code_type, $data) {
+  public function generateCode($code_type, $data) {
     switch ($code_type) {
       case 'mod97_contact10_campaign6_delimiter_X':
         $campaign_id = CRM_Utils_Array::value('campaign_id', $this->params, 0);
@@ -343,6 +350,11 @@ class CRM_Promocodes_Generator {
         $financial_type_id = CRM_Utils_Array::value('financial_type_id', $this->params, 0);
         $campaign_id = CRM_Utils_Array::value('campaign_id', $this->params, 0);
         return $this->generateSimpleThreeComponentMOD97($data->contact_id, '%d', $campaign_id, '%d', $financial_type_id, '%d', 'X');
+
+      case 'mod97_campaign_ftype_delimiter_X':
+        $financial_type_id = CRM_Utils_Array::value('financial_type_id', $this->params, 0);
+        $campaign_id = CRM_Utils_Array::value('campaign_id', $this->params, 0);
+        return $this->generateSimpleTwoComponentMOD97($campaign_id, '%d', $financial_type_id, '%d', 'X');
 
       default:
         return 'UNDEFINED';
