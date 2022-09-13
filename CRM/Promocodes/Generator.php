@@ -73,6 +73,7 @@ class CRM_Promocodes_Generator {
         'first_name'        => E::ts("First Name"),
         'last_name'         => E::ts("Last Name"),
         'suffix'            => E::ts("Suffix"),
+        'formal_title'      => E::ts("Formal Title"),
         'street_address'    => E::ts("Street Address"),
         'postal_code'       => E::ts("Postal Code"),
         'city'              => E::ts("City"),
@@ -183,6 +184,7 @@ class CRM_Promocodes_Generator {
           contact.first_name              AS first_name,
           contact.last_name               AS last_name,
           contact.postal_greeting_display AS postal_greeting,
+          contact.formal_title            AS formal_title,  
           contact.addressee_display       AS addressee_display,
           prefix.label                    AS prefix,
           suffix.label                    AS suffix,
@@ -242,6 +244,7 @@ class CRM_Promocodes_Generator {
           contact.first_name              AS first_name,
           contact.last_name               AS last_name,
           contact.postal_greeting_display AS postal_greeting,
+          contact.formal_title            AS formal_title,
           prefix.label                    AS prefix,
           suffix.label                    AS suffix,
           {$CUSTOM_FIELD_SELECTS}
