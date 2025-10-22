@@ -132,9 +132,9 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
 
         // store defaults
         $values = array(
-            'campaign_id'       => CRM_Utils_Array::value('campaign_id', $all_values),
-            'code_type'         => CRM_Utils_Array::value('code_type', $all_values),
-            'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $all_values),
+            'campaign_id'       => $all_values['campaign_id'] ?? NULL,
+            'code_type'         => $all_values['code_type'] ?? NULL,
+            'financial_type_id' => $all_values['financial_type_id'] ?? NULL,
         );
         $indices = range(1,self::CUSTOM_FIELD_COUNT);
         foreach ($indices as $i) {
