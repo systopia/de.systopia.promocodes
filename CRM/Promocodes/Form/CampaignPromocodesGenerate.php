@@ -71,7 +71,7 @@ class CRM_Promocodes_Form_CampaignPromocodesGenerate extends CRM_Core_Form
     }
 
     /**
-     * @throws CiviCRM_API3_Exception
+     * @throws CRM_Core_Exception
      */
     public function postProcess()
     {

@@ -137,7 +137,7 @@ class CRM_Promocodes_Utils {
      * @return array
      *    SELECT SQL snippet, JOIN SQL snippet
      *
-     * @throws CiviCRM_API3_Exception
+     * @throws CRM_Core_Exception
      *   should anything go wrong looking up the field metadata
      */
     public static function buildCustomFieldSnippets($custom_field_specs, $alias_mapping = []) {
