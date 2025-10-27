@@ -79,9 +79,9 @@ class CRM_Promocodes_Form_CampaignPromocodesGenerate extends CRM_Core_Form
 
         // Store defaults as setting.
         $values = [
-            'campaign_id' => CRM_Utils_Array::value('campaign_id', $all_values),
-            'code_type' => CRM_Utils_Array::value('code_type', $all_values),
-            'financial_type_id' => CRM_Utils_Array::value('financial_type_id', $all_values),
+            'campaign_id' => $all_values['campaign_id'] ?? NULL,
+            'code_type' => $all_values['code_type'] ?? NULL,
+            'financial_type_id' => $all_values['financial_type_id'] ?? NULL,
         ];
         Civi::settings()->set('de.systopia.promocodes.campaign', $values);
 
