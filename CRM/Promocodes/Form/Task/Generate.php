@@ -123,7 +123,7 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
      *  - store submitted settings as new defaults
      *  - generate CSV
      *
-     * @throws CiviCRM_API3_Exception
+     * @throws CRM_Core_Exception
      */
     public function postProcess()
     {
