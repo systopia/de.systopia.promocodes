@@ -24,9 +24,9 @@ function _civicrm_api3_promocode_Validate_spec(&$spec) {
  * @throws CRM_Core_Exception
  */
 function civicrm_api3_promocode_Validate($params) {
-  $data = array(
-    $params['promocode'] => array(),
-  );
+  $data = [
+    $params['promocode'] => [],
+  ];
 
   try {
     list(,$contact_id, $campaign_id, $checksum) = explode($params['delimiter'], $params['promocode']);

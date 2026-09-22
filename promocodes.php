@@ -29,15 +29,15 @@ use CRM_Promocodes_ExtensionUtil as E;
  */
 function promocodes_civicrm_searchTasks($objectType, &$tasks) {
   if ($objectType == 'contact') {
-    $tasks['generate_promocode'] = array(
+    $tasks['generate_promocode'] = [
         'title'  => E::ts('Generate Promo-Code'),
         'class'  => 'CRM_Promocodes_Form_Task_Generate',
-        'result' => false);
+        'result' => false];
   } elseif ($objectType == 'membership') {
-    $tasks['generate_promocode'] = array(
+    $tasks['generate_promocode'] = [
       'title'  => E::ts('Generate Promo-Code'),
       'class'  => 'CRM_Promocodes_Form_Task_GenerateMembership',
-      'result' => false);
+      'result' => false];
   }
 }
 
@@ -84,13 +84,13 @@ function promocodes_civicrm_enable() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  */
 function promocodes_civicrm_navigationMenu(&$menu) {
-  _promocodes_civix_insert_navigation_menu($menu, 'Campaigns', array(
+  _promocodes_civix_insert_navigation_menu($menu, 'Campaigns', [
     'label' => E::ts('Generate Promocodes'),
     'name' => 'promocodes_campaign_generate',
     'url' => 'civicrm/campaign/promocodes',
     'permission' => 'manage campaign',
     'operator' => 'OR',
     'separator' => 0,
-  ));
+  ]);
   _promocodes_civix_navigationMenu($menu);
 }
