@@ -53,7 +53,7 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
             E::ts('Code Type'),
             CRM_Promocodes_Generator::getCodeOptions(),
             true,
-            array('class' => 'huge40')
+            ['class' => 'huge40']
         );
 
         // add custom field options
@@ -67,13 +67,13 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
                 E::ts('Custom Field %1', [1 => $i]),
                 $custom_fields,
                 false,
-                array('class' => 'huge')
+                ['class' => 'huge']
             );
             $this->add(
                 'text',
                 "custom{$i}_name",
                 E::ts('Column Name'),
-                array('class' => 'huge'),
+                ['class' => 'huge'],
                 false
             );
         }
@@ -87,18 +87,18 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
         }
 
         $this->addButtons(
-            array(
-                array(
+            [
+                [
                     'type'      => 'submit',
                     'name'      => E::ts('Generate CSV'),
                     'isDefault' => true,
-                ),
-                array(
+                ],
+                [
                     'type'      => 'cancel',
                     'name'      => E::ts('Back'),
                     'isDefault' => false,
-                ),
-            )
+                ],
+            ]
         );
     }
 
@@ -131,11 +131,11 @@ class CRM_Promocodes_Form_Task_Generate extends CRM_Contact_Form_Task
         $all_values = $this->exportValues();
 
         // store defaults
-        $values = array(
+        $values = [
             'campaign_id'       => $all_values['campaign_id'] ?? NULL,
             'code_type'         => $all_values['code_type'] ?? NULL,
             'financial_type_id' => $all_values['financial_type_id'] ?? NULL,
-        );
+        ];
         $indices = range(1,self::CUSTOM_FIELD_COUNT);
         foreach ($indices as $i) {
             $values["custom{$i}_id"] = CRM_Utils_Array::value("custom{$i}_id", $all_values, '');
